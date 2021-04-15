@@ -5,7 +5,7 @@ Simple dictionary application using [WordNet](https://wordnet.princeton.edu/) fo
 
 # Installation
 
-1. Copy WordNet data file to `Data` folder, for example from [English Wordnet]([https://link](https://github.com/globalwordnet/english-wordnet)). Currently only LMF (xml) format is supported.
+1. Copy WordNet data file to `Data` folder, for example from [English Wordnet](https://github.com/globalwordnet/english-wordnet). Currently only LMF (xml) format is supported.
 
 2. Run `WordNet.Import`, which will generate Sqlite database `WordNet.db` from the specified WordNet file in `Data` folder.
 
