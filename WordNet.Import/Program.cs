@@ -49,21 +49,19 @@ namespace WordNet.Import
                 var parser = new XmlWordNetParser();
                 var result = parser.Parse(wordNetFile, loadRelations);
 
-                using (var db = new WordNetDbContext(connectionString))
+                using var db = new WordNetDbContext(connectionString);
+                Console.WriteLine("Saving into db. This will take a while.");
+
+                db.AddRange(result.LexicalEntries);
+
+                if (loadRelations)
                 {
-                    Console.WriteLine("Saving into db. This will take a while.");
-
-                    db.AddRange(result.LexicalEntries);
-
-                    if (loadRelations)
-                    {
-                        db.AddRange(result.SenseRelations);
-                        db.AddRange(result.SynsetRelations);
-                    }
-
-                    var entries = db.SaveChanges();
-                    Console.WriteLine($"Number of entries written to db: {entries}.");
+                    db.AddRange(result.SenseRelations);
+                    db.AddRange(result.SynsetRelations);
                 }
+
+                var entries = db.SaveChanges();
+                Console.WriteLine($"Number of entries written to db: {entries}.");
             }
             catch (Exception e)
             {

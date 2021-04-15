@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordNet.Util", "WordNet.Uti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordNet.Data", "WordNet.Data\WordNet.Data.csproj", "{998982CD-84BA-4764-8E19-BF2A382B2A54}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordNet.Wpf", "WordNet.Wpf\WordNet.Wpf.csproj", "{21BE1BF5-D489-45B5-9F3A-2B56FEA282C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{998982CD-84BA-4764-8E19-BF2A382B2A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{998982CD-84BA-4764-8E19-BF2A382B2A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{998982CD-84BA-4764-8E19-BF2A382B2A54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21BE1BF5-D489-45B5-9F3A-2B56FEA282C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21BE1BF5-D489-45B5-9F3A-2B56FEA282C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21BE1BF5-D489-45B5-9F3A-2B56FEA282C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21BE1BF5-D489-45B5-9F3A-2B56FEA282C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
