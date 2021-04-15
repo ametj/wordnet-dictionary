@@ -7,13 +7,14 @@ using WordNet.Import.Parsers;
 
 namespace WordNet.Import
 {
-    class Program
+    internal class Program
     {
         private static string Name => Assembly.GetExecutingAssembly().GetName().Name;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             bool shouldShowHelp = false;
+            bool loadRelations = true;
             string wordNetFile = string.Empty;
             string connectionString = string.Empty;
 
@@ -21,6 +22,7 @@ namespace WordNet.Import
             {
                 { "f|file=", "WordNet file to process,", f => wordNetFile = f },
                 { "c|connection=", "connection string,", cs => connectionString = cs },
+                { "nr|no-relations", "relations will not be imported,", _ => loadRelations = false },
                 { "h|help", "show this message and exit.", h => shouldShowHelp = h != null },
             };
 
@@ -45,12 +47,22 @@ namespace WordNet.Import
                     throw new InvalidOperationException(message);
 
                 var parser = new XmlWordNetParser();
-                var lexicalEntries = parser.Parse(wordNetFile);
+                var result = parser.Parse(wordNetFile, loadRelations);
 
-                using (var db = new WordNetContext(connectionString))
+                using (var db = new WordNetDbContext(connectionString))
                 {
-                    db.AddRange(lexicalEntries);
-                    db.SaveChanges();
+                    Console.WriteLine("Saving into db. This will take a while.");
+
+                    db.AddRange(result.LexicalEntries);
+
+                    if (loadRelations)
+                    {
+                        db.AddRange(result.SenseRelations);
+                        db.AddRange(result.SynsetRelations);
+                    }
+
+                    var entries = db.SaveChanges();
+                    Console.WriteLine($"Number of entries written to db: {entries}.");
                 }
             }
             catch (Exception e)
@@ -60,7 +72,6 @@ namespace WordNet.Import
                 Console.WriteLine($"\nTry `{Name} --help' for more information.");
                 return;
             }
-
         }
 
         private static void ShowHelp(OptionSet options)

@@ -9,8 +9,10 @@ namespace WordNet.Model
         public string Ili { get; set; }
         public PartOfSpeech PartOfSpeech { get; set; }
 
-        public IList<string> Definitions { get; set; } = new List<string>();
-        public IList<string> Examples { get; set; } = new List<string>();
-        public IList<SynsetRelation> Relations { get; set; } = new List<SynsetRelation>();
+        public virtual IList<Sense> Senses { get; set; }
+
+        public virtual IList<string> Definitions { get; set; } = new List<string>();
+        public virtual IList<string> Examples { get; set; } = new List<string>();
+        public virtual IList<SynsetRelation> Relations { get; set; } = new List<SynsetRelation>();
     }
 }

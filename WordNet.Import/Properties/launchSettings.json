@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WordNet": {
+      "commandName": "Project",
+      "commandLineArgs": "-f ../../../../Data/english-wordnet-2020.xml -c \"Data Source=../../../../Data/WordNet.db\""
+    }
+  }
+}

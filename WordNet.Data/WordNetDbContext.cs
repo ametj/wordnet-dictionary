@@ -9,13 +9,18 @@ using WordNet.Model;
 
 namespace WordNet.Data
 {
-    public class WordNetContext : DbContext
+    public class WordNetDbContext : DbContext
     {
         private readonly string _connectionString;
 
-        public WordNetContext(string connectionString)
+        public WordNetDbContext(string connectionString)
         {
             _connectionString = connectionString;
+            Database.EnsureCreated();
+        }
+
+        public WordNetDbContext(DbContextOptions<WordNetDbContext> options) : base(options)
+        {
             Database.EnsureCreated();
         }
 
@@ -27,7 +32,12 @@ namespace WordNet.Data
         public DbSet<SyntacticBehaviour> SyntacticBehaviours { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite(_connectionString);
+        {
+            options.UseLazyLoadingProxies();
+
+            if (!string.IsNullOrEmpty(_connectionString))
+                options.UseSqlite(_connectionString);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,17 +50,29 @@ namespace WordNet.Data
 
             modelBuilder
                 .Entity<LexicalEntry>()
-                .Property(e => e.Forms)
+                .Property(le => le.Forms)
                 .HasConversion(serialize, deserialize, collectionComparer);
+            modelBuilder
+                .Entity<LexicalEntry>()
+                .HasIndex(le => le.Lemma);
+
+            modelBuilder
+                .Entity<Sense>()
+                .HasMany(s => s.Relations)
+                .WithOne(s => s.Source);
 
             modelBuilder
                 .Entity<Synset>()
-                .Property(e => e.Definitions)
+                .Property(s => s.Definitions)
                 .HasConversion(serialize, deserialize, collectionComparer);
             modelBuilder
                 .Entity<Synset>()
-                .Property(e => e.Examples)
+                .Property(s => s.Examples)
                 .HasConversion(serialize, deserialize, collectionComparer);
+            modelBuilder
+                .Entity<Synset>()
+                .HasMany(s => s.Relations)
+                .WithOne(s => s.Source);
         }
     }
 }

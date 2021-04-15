@@ -79,6 +79,11 @@
     {
         public int Id { get; set; }
         public SynsetRelationType Type { get; set; }
-        public Synset Target { get; set; }
+
+        public string SourceId { get; set; }
+        public virtual Synset Source { get; set; }
+
+        public string TargetId { get; set; }
+        public virtual Synset Target { get; set; }
     }
 }

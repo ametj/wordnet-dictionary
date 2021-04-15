@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Xml;
 using WordNet.Data.Model;
+using WordNet.Import.Model;
 using WordNet.Model;
 using WordNet.Util;
 
@@ -10,18 +10,21 @@ namespace WordNet.Import.Parsers
 {
     public class XmlWordNetParser : IWordNetParser
     {
-        public ICollection<LexicalEntry> Parse(string fileName)
+        public ParseResult Parse(string fileName, bool loadRelations)
         {
+            var result = new ParseResult();
             var lexicalEntries = new Dictionary<string, LexicalEntry>();
             var senses = new Dictionary<string, Sense>();
             var synsets = new Dictionary<string, Synset>();
 
             var document = new XmlDocument();
-            document.Load(Path.GetFullPath(fileName));
+            document.Load(fileName);
 
             foreach (XmlNode lexicon in document.DocumentElement.ChildNodes)
             {
                 var language = lexicon.Attributes["language"].Value;
+
+                Console.WriteLine($"Started processing lexicon \"{lexicon.Attributes["label"].Value} ({language})\".");
 
                 foreach (XmlNode lexiconChild in lexicon.ChildNodes)
                 {
@@ -34,7 +37,7 @@ namespace WordNet.Import.Parsers
                         };
                         lexicalEntries.Add(lexicalEntry.Id, lexicalEntry);
 
-                        ParseLexicalEntryContent(lexiconChild, lexicalEntry, senses, synsets);
+                        ParseLexicalEntryContent(lexiconChild, lexicalEntry, senses, synsets, loadRelations);
                     }
                     else if (lexiconChild.Name == "Synset")
                     {
@@ -45,14 +48,37 @@ namespace WordNet.Import.Parsers
                         synset.Ili = lexiconChild.Attributes["ili"].Value;
                         synset.PartOfSpeech = PartOfSpeechExtensions.Parse(lexiconChild.Attributes["partOfSpeech"].Value);
 
-                        ParseSynsetContent(lexiconChild, synset, synsets);
+                        ParseSynsetContent(lexiconChild, synset, loadRelations);
                     }
                 }
             }
-            return lexicalEntries.Values;
+            Console.WriteLine($"Loaded {lexicalEntries.Count} lexical entries, {senses.Count} senses and {synsets.Count} synsets.");
+
+            result.LexicalEntries = lexicalEntries.Values;
+            if (loadRelations)
+            {
+                var senseRelations = new List<SenseRelation>();
+                var synsetRelations = new List<SynsetRelation>();
+
+                foreach (var sense in senses.Values)
+                {
+                    senseRelations.AddRange(sense.Relations);
+                    sense.Relations = null;
+                }
+                foreach (var synset in synsets.Values)
+                {
+                    synsetRelations.AddRange(synset.Relations);
+                    synset.Relations = null;
+                }
+                result.SenseRelations = senseRelations;
+                result.SynsetRelations = synsetRelations;
+                Console.WriteLine($"Loaded {senseRelations.Count} sense relations, {synsetRelations.Count} synset relations.");
+            }
+
+            return result;
         }
 
-        private void ParseLexicalEntryContent(XmlNode lexiconChild, LexicalEntry lexicalEntry, IDictionary<string, Sense> senses, IDictionary<string, Synset> synsets)
+        private void ParseLexicalEntryContent(XmlNode lexiconChild, LexicalEntry lexicalEntry, IDictionary<string, Sense> senses, IDictionary<string, Synset> synsets, bool loadRelations)
         {
             foreach (XmlNode lexicalEntryChild in lexiconChild.ChildNodes)
             {
@@ -76,16 +102,18 @@ namespace WordNet.Import.Parsers
                         lexicalEntryChild.Attributes["synset"].Value,
                         id => new Synset { Id = id });
 
-                    foreach (XmlNode relationNode in lexicalEntryChild.ChildNodes)
+                    if (loadRelations)
                     {
-                        var relation = new SenseRelation
+                        foreach (XmlNode relationNode in lexicalEntryChild.ChildNodes)
                         {
-                            Type = Enum.Parse<SenseRelationType>(relationNode.Attributes["relType"].Value),
-                            Target = senses.GetOrAdd(
-                                relationNode.Attributes["target"].Value,
-                                id => new Sense { Id = id })
-                        };
-                        sense.Relations.Add(relation);
+                            var relation = new SenseRelation
+                            {
+                                Type = Enum.Parse<SenseRelationType>(relationNode.Attributes["relType"].Value),
+                                SourceId = sense.Id,
+                                TargetId = relationNode.Attributes["target"].Value
+                            };
+                            sense.Relations.Add(relation);
+                        }
                     }
 
                     lexicalEntry.Senses.Add(sense);
@@ -101,7 +129,7 @@ namespace WordNet.Import.Parsers
             }
         }
 
-        private void ParseSynsetContent(XmlNode lexiconChild, Synset synset, Dictionary<string, Synset> synsets)
+        private void ParseSynsetContent(XmlNode lexiconChild, Synset synset, bool loadRelations)
         {
             foreach (XmlNode synsetChild in lexiconChild.ChildNodes)
             {
@@ -113,14 +141,13 @@ namespace WordNet.Import.Parsers
                 {
                     synset.Examples.Add(synsetChild.InnerText);
                 }
-                else if (synsetChild.Name == "SynsetRelation")
+                else if (loadRelations && synsetChild.Name == "SynsetRelation")
                 {
                     var relation = new SynsetRelation
                     {
                         Type = Enum.Parse<SynsetRelationType>(synsetChild.Attributes["relType"].Value),
-                        Target = synsets.GetOrAdd(
-                            synsetChild.Attributes["target"].Value,
-                            id => new Synset { Id = id })
+                        SourceId = synset.Id,
+                        TargetId = synsetChild.Attributes["target"].Value
                     };
                     synset.Relations.Add(relation);
                 }

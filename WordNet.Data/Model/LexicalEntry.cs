@@ -11,7 +11,7 @@ namespace WordNet.Model
         public PartOfSpeech PartOfSpeech { get; set; }
 
         public IList<string> Forms { get; set; } = new List<string>();
-        public IList<Sense> Senses { get; set; } = new List<Sense>();
-        public IList<SyntacticBehaviour> SyntacticBehaviours { get; set; } = new List<SyntacticBehaviour>();
+        public virtual IList<Sense> Senses { get; set; } = new List<Sense>();
+        public virtual IList<SyntacticBehaviour> SyntacticBehaviours { get; set; } = new List<SyntacticBehaviour>();
     }
 }

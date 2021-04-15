@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using WordNet.Model;
+﻿using WordNet.Import.Model;
 
 namespace WordNet.Import.Parsers
 {
     public interface IWordNetParser
     {
-        ICollection<LexicalEntry> Parse(string fileName);
+        ParseResult Parse(string fileName, bool loadRelations);
     }
 }
