@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WordNet.Model
 {
@@ -13,5 +14,8 @@ namespace WordNet.Model
         public virtual Synset Synset { get; set; }
 
         public virtual IList<SenseRelation> Relations { get; set; } = new List<SenseRelation>();
+
+        [NotMapped]
+        public string PositionInSynset => Id[^2..];
     }
 }
