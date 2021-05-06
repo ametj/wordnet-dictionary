@@ -2,6 +2,8 @@
 
 Simple dictionary application using [WordNet](https://wordnet.princeton.edu/) for word definitions.
 
+![WordNet](Data/WordNet.png)
+
 
 # Installation
 
