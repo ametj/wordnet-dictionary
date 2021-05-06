@@ -1,39 +1,33 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Prism.Ioc;
+using Prism.Unity;
 using System.Configuration;
 using System.Windows;
 using WordNet.Data;
-using WordNet.Wpf.ViewModel;
+using WordNet.Wpf.Views;
+using WordNet.Wpf.Views.Dictionary;
 
 namespace WordNet.Wpf
 {
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
-        private readonly ServiceProvider serviceProvider;
-
-        public App()
+        protected override void RegisterTypes(IContainerRegistry container)
         {
-            ServiceCollection services = new ServiceCollection();
-            ConfigureServices(services);
-            serviceProvider = services.BuildServiceProvider();
+            var optionsBuilder = new DbContextOptionsBuilder<WordNetDbContext>();
+            optionsBuilder.UseSqlite(ConfigurationManager.ConnectionStrings["Sqlite"].ConnectionString);
+
+            container.RegisterInstance(optionsBuilder.Options);
+            container.RegisterSingleton<WordNetDbContext>();
+            container.RegisterSingleton<IWordNetService, WordNetService>();
+
+            container.RegisterForNavigation<Dictionary>();
+            container.RegisterForNavigation<Placeholder>();
         }
 
-        private void ConfigureServices(ServiceCollection services)
+        protected override Window CreateShell()
         {
-            services.AddDbContext<WordNetDbContext>(options =>
-            {
-                options.UseSqlite(ConfigurationManager.ConnectionStrings["Sqlite"].ConnectionString);
-            });
-
-            services.AddSingleton<IWordNetService, WordNetService>();
-            services.AddSingleton<MainWindow>();
-            services.AddSingleton<MainWindowViewModel>();
-        }
-
-        private void OnStartup(object sender, StartupEventArgs e)
-        {
-            var mainWindow = serviceProvider.GetService<MainWindow>();
-            mainWindow.Show();
+            var window = Container.Resolve<Shell>();
+            return window;
         }
     }
 }

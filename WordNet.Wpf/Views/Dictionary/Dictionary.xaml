@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="WordNet.Wpf.Views.Dictionary.Dictionary"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:le="clr-namespace:WordNet.Wpf.Views.LexicalEntry"
+             xmlns:c="clr-namespace:WordNet.Wpf.Controls"
+             xmlns:vm="clr-namespace:WordNet.Wpf.ViewModels.Dictionary"
+             xmlns:prism="http://prismlibrary.com/"
+             mc:Ignorable="d"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance Type=vm:DictionaryViewModel}" d:Width="300" d:Height="150" d:Background="White">
+    <Grid Margin="8, 4" FocusManager.FocusedElement="{Binding ElementName=SuggestionTextBox}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <c:SuggestionsTextBox x:Name="SuggestionTextBox"
+                             Grid.Row="0"
+                             Height="32"
+                             MaxLength="50"
+                             MaxPopupHeight="200"
+                             FontSize="16"
+                             Watermark="Search..."
+                             Text="{Binding Text, Mode=TwoWay}"
+                             ItemsSource="{Binding Suggestions}"
+                             Command="{Binding SubmitCommand}"
+                             CommandParameter="{Binding Text}"
+                             GetSuggestionsCommand="{Binding GetSuggestionsCommand}">
+        </c:SuggestionsTextBox>
+        <le:LexicalEntryList Grid.Row="1" Margin="0, 4"></le:LexicalEntryList>
+    </Grid>
+</UserControl>

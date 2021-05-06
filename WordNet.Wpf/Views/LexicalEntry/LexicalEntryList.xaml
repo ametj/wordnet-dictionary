@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="WordNet.Wpf.Views.LexicalEntry.LexicalEntryList"
+             x:Name="LexicalEntryListUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cv="clr-namespace:WordNet.Wpf.Converters"
+             xmlns:vm="clr-namespace:WordNet.Wpf.ViewModels.Dictionary"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=vm:DictionaryViewModel}"
+             d:DesignHeight="400" d:DesignWidth="600" d:Background="White">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <ScrollViewer.Resources>
+            <cv:MultiValueEqualityConverter x:Key="MultiValueEqualityConverter" />
+            <cv:PartOfSpeechConverter x:Key="PartOfSpeechConverter" />
+        </ScrollViewer.Resources>
+        <ItemsControl ItemsSource="{Binding LexicalEntries}" Focusable="False">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding PartOfSpeech, Converter={StaticResource PartOfSpeechConverter}}" FontSize="16" FontStyle="Italic" FontWeight="Bold" Margin="0, 5" />
+                        <ItemsControl ItemsSource="{Binding Senses}" Focusable="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,0,0,10">
+                                        <ItemsControl ItemsSource="{Binding Synset.SensesOrderedByPositionInSynset}" Focusable="False">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock x:Name="Comma" Text=", " FontSize="14" FontWeight="Normal" />
+                                                        <Button Command="{Binding DataContext.SubmitCommand, ElementName=LexicalEntryListUserControl}" CommandParameter="{Binding LexicalEntry.Lemma}">
+                                                            <!--Remove button style-->
+                                                            <Button.Template>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <ContentPresenter />
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                            <TextBlock x:Name="Text" Text="{Binding LexicalEntry.Lemma}" FontSize="14" FontWeight="Normal" Foreground="{DynamicResource MahApps.Brushes.Accent}"></TextBlock>
+                                                        </Button>
+                                                    </StackPanel>
+
+                                                    <DataTemplate.Triggers>
+                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                                            <Setter TargetName="Comma" Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Text" Property="TextDecorations" Value="Underline" />
+                                                        </Trigger>
+                                                        <DataTrigger Value="True">
+                                                            <DataTrigger.Binding>
+                                                                <MultiBinding Converter="{StaticResource MultiValueEqualityConverter}">
+                                                                    <Binding ElementName="LexicalEntryListUserControl" Path="DataContext.SelectedLemma" Mode="OneWay" />
+                                                                    <Binding Path="LexicalEntry.Lemma" Mode="OneWay" />
+                                                                </MultiBinding>
+                                                            </DataTrigger.Binding>
+                                                            <Setter TargetName="Text" Property="TextDecorations" Value="None" />
+                                                            <Setter TargetName="Text" Property="FontWeight" Value="Bold" />
+                                                            <Setter Property="IsEnabled" Value="False" />
+                                                        </DataTrigger>
+                                                    </DataTemplate.Triggers>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <ItemsControl ItemsSource="{Binding Synset.Definitions}" Focusable="False" Margin="10,0,0,0">
+                                        </ItemsControl>
+                                        <ItemsControl ItemsSource="{Binding Synset.Examples}" Focusable="False" FontStyle="Italic" Margin="20,0,0,0">
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>

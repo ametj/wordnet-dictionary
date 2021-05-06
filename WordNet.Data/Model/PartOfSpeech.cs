@@ -4,12 +4,12 @@ namespace WordNet.Data.Model
 {
     public enum PartOfSpeech
     {
-        Noun,
-        Verb,
-        Adjective,
-        Adverb,
-        AdjectiveSatellite,
-        Other
+        Noun = 0,
+        Verb = 1,
+        Adjective = 2,
+        Adverb = 3,
+        AdjectiveSatellite = 4,
+        Other = 5
     }
 
     public static class PartOfSpeechExtensions

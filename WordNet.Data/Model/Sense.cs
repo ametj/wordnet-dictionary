@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WordNet.Model
+namespace WordNet.Data.Model
 {
     public class Sense
     {

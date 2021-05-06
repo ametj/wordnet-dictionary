@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using WordNet.Data.Model;
 
-namespace WordNet.Model
+namespace WordNet.Data.Model
 {
     public class LexicalEntry
     {

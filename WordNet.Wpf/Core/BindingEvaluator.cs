@@ -5,7 +5,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace WordNet.Wpf.Controls.SuggestionTextBox
+namespace WordNet.Wpf.Core
 {
     public class BindingEvaluator : FrameworkElement
     {

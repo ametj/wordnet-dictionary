@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Xml;
 using WordNet.Data.Model;
 using WordNet.Import.Model;
-using WordNet.Model;
 using WordNet.Util;
 
 namespace WordNet.Import.Parsers
@@ -78,7 +77,7 @@ namespace WordNet.Import.Parsers
             return result;
         }
 
-        private void ParseLexicalEntryContent(XmlNode lexiconChild, LexicalEntry lexicalEntry, IDictionary<string, Sense> senses, IDictionary<string, Synset> synsets, bool loadRelations)
+        private static void ParseLexicalEntryContent(XmlNode lexiconChild, LexicalEntry lexicalEntry, IDictionary<string, Sense> senses, IDictionary<string, Synset> synsets, bool loadRelations)
         {
             foreach (XmlNode lexicalEntryChild in lexiconChild.ChildNodes)
             {
@@ -129,7 +128,7 @@ namespace WordNet.Import.Parsers
             }
         }
 
-        private void ParseSynsetContent(XmlNode lexiconChild, Synset synset, bool loadRelations)
+        private static void ParseSynsetContent(XmlNode lexiconChild, Synset synset, bool loadRelations)
         {
             foreach (XmlNode synsetChild in lexiconChild.ChildNodes)
             {

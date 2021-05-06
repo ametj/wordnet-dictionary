@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WordNet.Model;
+using WordNet.Data.Model;
 
 namespace WordNet.Import.Model
 {

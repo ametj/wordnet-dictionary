@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WordNet.Model;
+using WordNet.Data.Model;
 
 namespace WordNet.Data
 {
@@ -23,6 +24,9 @@ namespace WordNet.Data
 
         public async Task<ICollection<string>> GetSuggestionsByLemma(string lemma, int limit)
         {
+            lemma = lemma?.Trim().ToLower();
+            if (string.IsNullOrEmpty(lemma)) return Array.Empty<string>();
+
             var query = Context.LexicalEntries
                 .Where(le => le.Lemma.ToLower().StartsWith(lemma))
                 .Select(le => le.Lemma)

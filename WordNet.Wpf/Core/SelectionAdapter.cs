@@ -4,7 +4,7 @@
 
 using System.Windows.Controls.Primitives;
 
-namespace WordNet.Wpf.Controls.SuggestionTextBox
+namespace WordNet.Wpf.Core
 {
     public class SelectionAdapter
     {

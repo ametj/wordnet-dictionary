@@ -1,4 +1,4 @@
-﻿namespace WordNet.Model
+﻿namespace WordNet.Data.Model
 {
     public enum SenseRelationType
     {
