@@ -9,16 +9,13 @@ namespace WordNet.Wpf.Views
 {
     public partial class Shell : MetroWindow
     {
-        public Shell(ShellViewModel mainWindowViewModel)
+        public Shell(IRegionManager regionManager)
         {
             InitializeComponent();
-            DataContext = MainWindowViewModel = mainWindowViewModel;
 
             RegionManager.SetRegionName(HamburgerMenuContent, RegionNames.ContentRegion);
-            RegionManager.SetRegionManager(HamburgerMenuContent, mainWindowViewModel.RegionManager);
+            RegionManager.SetRegionManager(HamburgerMenuContent, regionManager);
         }
-
-        public ShellViewModel MainWindowViewModel { get; }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -27,7 +24,7 @@ namespace WordNet.Wpf.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MainWindowViewModel.NavigateCommand.Execute(nameof(Dictionary.Dictionary));
+            (DataContext as ShellViewModel)?.NavigateCommand.Execute(nameof(Dictionary.Dictionary));
         }
     }
 }
