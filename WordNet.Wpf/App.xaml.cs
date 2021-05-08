@@ -4,8 +4,10 @@ using Prism.Unity;
 using System.Configuration;
 using System.Windows;
 using WordNet.Data;
+using WordNet.Wpf.Service;
 using WordNet.Wpf.Views;
 using WordNet.Wpf.Views.Dictionary;
+using WordNet.Wpf.Views.Settings;
 
 namespace WordNet.Wpf
 {
@@ -19,8 +21,11 @@ namespace WordNet.Wpf
             container.RegisterInstance(optionsBuilder.Options);
             container.RegisterSingleton<WordNetDbContext>();
             container.RegisterSingleton<IWordNetService, WordNetService>();
+            container.RegisterSingleton<ISettingsService, SettingsService>();
+            container.RegisterSingleton<IThemeService, ThemeService>();
 
             container.RegisterForNavigation<Dictionary>();
+            container.RegisterForNavigation<Settings>();
             container.RegisterForNavigation<Placeholder>();
         }
 
@@ -28,6 +33,12 @@ namespace WordNet.Wpf
         {
             var window = Container.Resolve<Shell>();
             return window;
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            Wpf.Properties.Settings.Default.Save();
         }
     }
 }

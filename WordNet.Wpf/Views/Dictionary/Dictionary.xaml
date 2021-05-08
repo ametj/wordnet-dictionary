@@ -10,7 +10,7 @@
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance Type=vm:DictionaryViewModel}" d:Width="300" d:Height="150" d:Background="White">
-    <Grid Margin="8, 4" FocusManager.FocusedElement="{Binding ElementName=SuggestionTextBox}">
+    <Grid FocusManager.FocusedElement="{Binding ElementName=SuggestionTextBox}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

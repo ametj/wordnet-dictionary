@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using Prism.Regions;
 using WordNet.Wpf.Core;
+using WordNet.Wpf.Service;
 
 namespace WordNet.Wpf.ViewModels
 {
@@ -9,8 +10,10 @@ namespace WordNet.Wpf.ViewModels
     {
         public IRegionManager RegionManager { get; }
 
-        public ShellViewModel(IRegionManager regionManager, ApplicationCommands applicationCommands)
+        public ShellViewModel(ISettingsService settingsService, IRegionManager regionManager, ApplicationCommands applicationCommands)
         {
+            settingsService.LoadSettings();
+
             RegionManager = regionManager;
             applicationCommands.NavigateCommand.RegisterCommand(NavigateCommand);
         }

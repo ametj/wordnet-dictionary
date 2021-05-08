@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="WordNet.Wpf.Views.Settings.Settings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:WordNet.Wpf.ViewModels.Settings"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Style="{StaticResource Header1}" Text="Theme" />
+
+            <StackPanel Margin="{StaticResource ContainerMargin}">
+                <TextBlock Style="{StaticResource Label1}" Text="Choose a mode" />
+                <RadioButton Content="Light"
+                             GroupName="ThemeMode" 
+                             IsChecked="{Binding IsThemeModeLight}"/>
+                <RadioButton Content="Dark"
+                             GroupName="ThemeMode" 
+                             IsChecked="{Binding IsThemeModeDark}"/>
+                <RadioButton Content="Windows default"
+                             GroupName="ThemeMode" 
+                             IsChecked="{Binding IsThemeModeWindowsDefault}"/>
+            </StackPanel>
+
+            <StackPanel Margin="{StaticResource ContainerMargin}">
+                <TextBlock Text="Accent color" Style="{StaticResource Label1}" />
+                <ListBox ItemsSource="{Binding AccentColors}"
+                         IsHitTestVisible="{Binding UseWindowsAccentColor, Converter={StaticResource NegateBoolConverter}}"
+                         IsEnabled="{Binding UseWindowsAccentColor, Converter={StaticResource NegateBoolConverter}}"
+                         SelectedItem="{Binding SelectedAccentColor}"
+                         Style="{StaticResource ColorButtonsListBox}"
+                         MaxWidth="360" />
+                <metro:ToggleSwitch Content="Use Windows accent color" IsOn="{Binding UseWindowsAccentColor}" />
+            </StackPanel>
+
+            <TextBlock Style="{StaticResource Header1}" Text="Behaviour" />
+            
+            <StackPanel Margin="{StaticResource ContainerMargin}">
+                <metro:ToggleSwitch Content="Always on top" IsOn="{Binding AlwaysOnTop}" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

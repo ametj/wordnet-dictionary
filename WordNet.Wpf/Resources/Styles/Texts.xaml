@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Thickness x:Key="ContainerMargin" Bottom="10" />
+    <Thickness x:Key="TextMargin" Bottom="5" />
+
+    <Style x:Key="Header1" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="Margin" Value="{StaticResource TextMargin}" />
+    </Style>
+
+    <Style x:Key="Label1" TargetType="TextBlock">
+        <Setter Property="Margin" Value="{StaticResource TextMargin}" />
+    </Style>
+</ResourceDictionary>

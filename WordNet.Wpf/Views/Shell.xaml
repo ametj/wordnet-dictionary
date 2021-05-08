@@ -11,7 +11,8 @@
                    xmlns:vm="clr-namespace:WordNet.Wpf.ViewModels"
                    mc:Ignorable="d"
                    Title="WordNet"
-                   SizeToContent="WidthAndHeight" MinHeight="400" MinWidth="600"
+                   MinHeight="300" MinWidth="400"
+                   Height="400" Width="600"
                    MouseDown="Window_MouseDown"
                    Loaded="Window_Loaded"
                    prism:ViewModelLocator.AutoWireViewModel="True"
@@ -24,7 +25,7 @@
                                                Storyboard.TargetProperty="(UIElement.Opacity)">
                     <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                     <SplineDoubleKeyFrame KeyTime="00:00:00.2" Value="0" />
-                    <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="1">
+                    <EasingDoubleKeyFrame KeyTime="00:00:00.4" Value="1">
                         <EasingDoubleKeyFrame.EasingFunction>
                             <SineEase />
                         </EasingDoubleKeyFrame.EasingFunction>
@@ -84,6 +85,7 @@
                 <metro:TransitioningContentControl x:Name="HamburgerMenuContent"
                                                    Transition="Custom"
                                                    CustomVisualStatesName="FadeOutOldFadeInNew"
+                                                   Margin="8, 4"
                                                    prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}">
                     <metro:TransitioningContentControl.CustomVisualStates>
                         <VisualState x:Name="FadeOutOldFadeInNew" Storyboard="{StaticResource FadeOutOldFadeInNew}" />
@@ -120,7 +122,7 @@
             <!--Options-->
             <metro:HamburgerMenu.OptionsItemsSource>
                 <metro:HamburgerMenuItemCollection>
-                    <metro:HamburgerMenuIconItem Label="Settings">
+                    <metro:HamburgerMenuIconItem Label="Settings" Command="{Binding DataContext.NavigateCommand, ElementName=MainWindow}" CommandParameter="Settings">
                         <metro:HamburgerMenuIconItem.Icon>
                             <icon:PackIconMaterial Kind="Cog" />
                         </metro:HamburgerMenuIconItem.Icon>

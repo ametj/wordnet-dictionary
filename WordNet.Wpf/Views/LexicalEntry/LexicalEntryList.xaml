@@ -4,16 +4,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:cv="clr-namespace:WordNet.Wpf.Converters"
              xmlns:vm="clr-namespace:WordNet.Wpf.ViewModels.Dictionary"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=vm:DictionaryViewModel}"
              d:DesignHeight="400" d:DesignWidth="600" d:Background="White">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <ScrollViewer.Resources>
-            <cv:MultiValueEqualityConverter x:Key="MultiValueEqualityConverter" />
-            <cv:PartOfSpeechConverter x:Key="PartOfSpeechConverter" />
-        </ScrollViewer.Resources>
         <ItemsControl ItemsSource="{Binding LexicalEntries}" Focusable="False">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
