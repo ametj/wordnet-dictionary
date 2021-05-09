@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE LexicalResource SYSTEM "http://globalwordnet.github.io/schemas/WN-LMF-1.0.dtd">
+<LexicalResource xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <Lexicon id="ewn" label="WordNet" language="en">
+    <LexicalEntry id="ewn-wordnet-n">
+      <Lemma partOfSpeech="n" writtenForm="wordnet" />
+      <Sense id="ewn-wordnet-n-06652077-01" synset="ewn-06652077-n" dc:identifier="wordnet%1:10:01::" />
+    </LexicalEntry>
+    <LexicalEntry id="ewn-Princeton_WordNet-n">
+      <Lemma partOfSpeech="n" writtenForm="Princeton WordNet" />
+      <Sense id="ewn-Princeton_WordNet-n-06651729-02" synset="ewn-06651729-n" dc:identifier="princeton_wordnet%1:10:00::">
+        <SenseRelation relType="exemplifies" target="ewn-trademark-n-06864792-01" />
+      </Sense>
+    </LexicalEntry>
+    <Synset id="ewn-06652077-n" ili="i71370" partOfSpeech="n" dc:subject="noun.communication">
+      <Definition>any of the machine-readable lexical databases modeled after the Princeton WordNet</Definition>
+      <SynsetRelation relType="hypernym" target="ewn-06651393-n" />
+    </Synset>
+    <Synset id="ewn-06651729-n" ili="i71369" partOfSpeech="n" dc:subject="noun.communication">
+      <Definition>a machine-readable lexical database organized by meanings; developed at Princeton University</Definition>
+      <SynsetRelation relType="instance_hypernym" target="ewn-06651393-n" />
+      <SynsetRelation relType="instance_hyponym" target="ewn-06651972-n" />
+      <SynsetRelation relType="has_domain_topic" target="ewn-08289781-n" />
+    </Synset>
+  </Lexicon>
+</LexicalResource>
