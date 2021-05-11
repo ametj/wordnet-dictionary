@@ -1,11 +1,12 @@
 ﻿using Prism.Mvvm;
+using Prism.Regions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using WordNet.Wpf.Service;
 
 namespace WordNet.Wpf.ViewModels.Settings
 {
+    [RegionMemberLifetime(KeepAlive = false)]
     public class SettingsViewModel : BindableBase
     {
         private readonly IThemeService ThemeService;
@@ -78,17 +79,6 @@ namespace WordNet.Wpf.ViewModels.Settings
         {
             get { return ThemeService.ThemeMode == ThemeMode.WindowsDefault; }
             set { SelectedThemeMode = ThemeMode.WindowsDefault; }
-        }
-
-        public bool AlwaysOnTop
-        {
-            get { return Properties.Settings.Default.AllwaysOnTop; }
-            set
-            {
-                Properties.Settings.Default.AllwaysOnTop = value;
-                Application.Current.MainWindow.Topmost = value;
-                RaisePropertyChanged(nameof(AlwaysOnTop));
-            }
         }
     }
 }

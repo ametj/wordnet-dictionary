@@ -7,6 +7,7 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:tb="http://www.hardcodet.net/taskbar"
                    xmlns:core="clr-namespace:WordNet.Wpf.Core"
                    xmlns:vm="clr-namespace:WordNet.Wpf.ViewModels"
                    mc:Ignorable="d"
@@ -69,7 +70,8 @@
             </DataTemplate>
         </ResourceDictionary>
     </metro:MetroWindow.Resources>
-    <DockPanel>
+
+    <Grid>
         <metro:HamburgerMenu x:Name="HamburgerMenuControl"
                              DisplayMode="CompactOverlay"
                              CompactPaneLength="40"
@@ -135,5 +137,19 @@
                 </metro:HamburgerMenuItemCollection>
             </metro:HamburgerMenu.OptionsItemsSource>
         </metro:HamburgerMenu>
-    </DockPanel>
+
+        <tb:TaskbarIcon x:Name="NotificationAreaIcon"
+                        Visibility="{core:SettingBinding ShowNotificationAreaIcon, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        ToolTipText="WordNet"
+                        MenuActivation="RightClick"
+                        DoubleClickCommand="{Binding ApplicationCommands.ShowHideWindowCommand}">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu MinWidth="150" FontSize="12">
+                    <MenuItem Header="Show" Command="{Binding ApplicationCommands.ShowWindowCommand}" />
+                    <Separator />
+                    <MenuItem  Header="Exit" Command="{Binding ApplicationCommands.CloseWindowCommand}" />
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+    </Grid>
 </metro:MetroWindow>

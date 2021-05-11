@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:core="clr-namespace:WordNet.Wpf.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -40,7 +41,14 @@
             <TextBlock Style="{StaticResource Header1}" Text="Behaviour" />
             
             <StackPanel Margin="{StaticResource ContainerMargin}">
-                <metro:ToggleSwitch Content="Always on top" IsOn="{Binding AlwaysOnTop}" />
+                <metro:ToggleSwitch Content="Always on top" IsOn="{core:SettingBinding AlwaysOnTop}" />
+            </StackPanel>
+
+            <TextBlock Style="{StaticResource Header1}" Text="Notification area" />
+            <StackPanel Margin="{StaticResource ContainerMargin}">
+                <metro:ToggleSwitch Content="Show icon in notification area" IsOn="{core:SettingBinding ShowNotificationAreaIcon}" />
+                <metro:ToggleSwitch Content="Minimize to notification area" IsOn="{core:SettingBinding MinimizeToNotificationArea}" IsEnabled="{core:SettingBinding ShowNotificationAreaIcon, Mode=OneWay}" />
+                <metro:ToggleSwitch Content="Close to notification area" IsOn="{core:SettingBinding CloseToNotificationArea}" IsEnabled="{core:SettingBinding ShowNotificationAreaIcon, Mode=OneWay}"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

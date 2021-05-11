@@ -13,9 +13,19 @@ namespace WordNet.Wpf.Service
 
         public void LoadSettings()
         {
-            Application.Current.MainWindow.Topmost = Properties.Settings.Default.AllwaysOnTop;
+            Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
+
+            Application.Current.MainWindow.Topmost = Properties.Settings.Default.AlwaysOnTop;
 
             _themeService.LoadSettings();
+        }
+
+        private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var settings = sender as Properties.Settings;
+
+            if (e.PropertyName == nameof(settings.AlwaysOnTop))
+                Application.Current.MainWindow.Topmost = settings.AlwaysOnTop;
         }
     }
 }

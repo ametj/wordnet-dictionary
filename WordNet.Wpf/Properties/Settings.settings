@@ -2,7 +2,16 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WordNet.Wpf.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="AllwaysOnTop" Type="System.Boolean" Scope="User">
+    <Setting Name="AlwaysOnTop" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowNotificationAreaIcon" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="MinimizeToNotificationArea" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CloseToNotificationArea" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ThemeSettings" Type="WordNet.Wpf.Service.ThemeSettings" Scope="User">

@@ -26,12 +26,48 @@ namespace WordNet.Wpf.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AllwaysOnTop {
+        public bool AlwaysOnTop {
             get {
-                return ((bool)(this["AllwaysOnTop"]));
+                return ((bool)(this["AlwaysOnTop"]));
             }
             set {
-                this["AllwaysOnTop"] = value;
+                this["AlwaysOnTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowNotificationAreaIcon {
+            get {
+                return ((bool)(this["ShowNotificationAreaIcon"]));
+            }
+            set {
+                this["ShowNotificationAreaIcon"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MinimizeToNotificationArea {
+            get {
+                return ((bool)(this["MinimizeToNotificationArea"]));
+            }
+            set {
+                this["MinimizeToNotificationArea"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CloseToNotificationArea {
+            get {
+                return ((bool)(this["CloseToNotificationArea"]));
+            }
+            set {
+                this["CloseToNotificationArea"] = value;
             }
         }
         

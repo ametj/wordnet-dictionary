@@ -4,6 +4,7 @@ using Prism.Unity;
 using System.Configuration;
 using System.Windows;
 using WordNet.Data;
+using WordNet.Wpf.Core;
 using WordNet.Wpf.Service;
 using WordNet.Wpf.Views;
 using WordNet.Wpf.Views.Dictionary;
@@ -23,6 +24,7 @@ namespace WordNet.Wpf
             container.RegisterSingleton<IWordNetService, WordNetService>();
             container.RegisterSingleton<ISettingsService, SettingsService>();
             container.RegisterSingleton<IThemeService, ThemeService>();
+            container.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
 
             container.RegisterForNavigation<Dictionary>();
             container.RegisterForNavigation<Settings>();
