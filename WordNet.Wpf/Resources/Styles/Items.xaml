@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ItemsPanelTemplate x:Key="ItemsControlHorizontalWrapTemplate">
+        <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
+    </ItemsPanelTemplate>
+
+    <DataTemplate x:Key="ItemsControlBulletTextWrapTemplate">
+        <DockPanel>
+            <TextBlock Text="• " />
+            <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+        </DockPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ItemsControlTextWrapTemplate">
+        <TextBlock Text="{Binding StringFormat='{}{0} '}" TextWrapping="Wrap" />
+    </DataTemplate>
+</ResourceDictionary>

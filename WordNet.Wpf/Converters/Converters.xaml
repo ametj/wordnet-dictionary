@@ -4,4 +4,5 @@
     <cv:MultiValueEqualityConverter x:Key="MultiValueEqualityConverter" />
     <cv:NegateBoolConverter x:Key="NegateBoolConverter" />
     <cv:PartOfSpeechConverter x:Key="PartOfSpeechConverter" />
+    <cv:IsLastItemConverter x:Key="IsLastItemConverter" />
 </ResourceDictionary>

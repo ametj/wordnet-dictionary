@@ -2,6 +2,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Buttons.xaml" />
         <ResourceDictionary Source="ColorButtonsListBox.xaml" />
+        <ResourceDictionary Source="Items.xaml" />
         <ResourceDictionary Source="SuggestionTextBox.xaml" />
         <ResourceDictionary Source="Texts.xaml" />
     </ResourceDictionary.MergedDictionaries>
