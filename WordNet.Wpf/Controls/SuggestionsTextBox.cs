@@ -263,7 +263,7 @@ namespace WordNet.Wpf.Controls
                     if (IsDropDownOpen)
                         SelectionAdapter?.IncrementSelection();
                     else
-                        ShouldGetSuggestions();
+                        GetSuggestions();
                     break;
 
                 case Key.Up:
@@ -273,13 +273,15 @@ namespace WordNet.Wpf.Controls
 
                 case Key.Enter:
                     // Always confirm changes made into TextBox
-                    ItemsSelector.SelectedItem = Editor.Text;
+                    SelectedItem = string.IsNullOrEmpty(Editor.Text) ? null : Editor.Text;
                     CommitSelection();
                     break;
 
                 case Key.Escape:
                     // Revert to previously selected, no need to confirm
-                    ItemsSelector.SelectedItem = SelectedItem;
+                    ItemsSelector.SelectedItem = SelectedItem = string.IsNullOrEmpty(Filter) ? null : Filter;
+                    if (GetDisplayText(ItemsSelector.SelectedItem) != Filter)
+                        ItemsSelector.SelectedItem = null;
                     CommitSelection(false);
                     break;
 
@@ -304,20 +306,27 @@ namespace WordNet.Wpf.Controls
 
         private void OnEditorTextChanged(object sender, TextChangedEventArgs e)
         {
-            ItemsSelector.SelectedItem = Text = Editor.Text;
+            ItemsSelector.SelectedItem = Text = string.IsNullOrEmpty(Editor.Text) ? null : Editor.Text;
 
             // Prevent getting suggestions when changing selection
             if (_isUpdatingText)
                 return;
 
-            ShouldGetSuggestions();
+            if (!string.IsNullOrEmpty(Text))
+            {
+                ShouldGetSuggestions();
+            }
+            else
+            {
+                IsDropDownOpen = false;
+            }
         }
 
         private void ShouldGetSuggestions()
         {
             if (FetchTimer != null) FetchTimer.IsEnabled = false;
 
-            if (Editor.Text.Length > 0 && IsKeyboardFocusWithin)
+            if (IsKeyboardFocusWithin)
             {
                 EnableFetchTimer();
             }
@@ -339,7 +348,9 @@ namespace WordNet.Wpf.Controls
 
         private void OnFetchTimerTick(object sender, EventArgs e)
         {
-            GetSuggestions();
+            if (!string.IsNullOrEmpty(Editor.Text))
+                GetSuggestions();
+
             FetchTimer.IsEnabled = false;
         }
 
@@ -366,12 +377,12 @@ namespace WordNet.Wpf.Controls
             }
             else
             {
-                SelectedItem = Editor.Text;
+                ItemsSelector.SelectedItem = SelectedItem;
             }
 
             IsDropDownOpen = false;
             Editor.Select(Editor.Text.Length, 0);
-
+            Filter = Editor.Text;
             if (FetchTimer != null) FetchTimer.IsEnabled = false;
 
             if (confirmSelection) ExecuteCommand();

@@ -11,17 +11,9 @@ namespace WordNet.Data
 {
     public class WordNetDbContext : DbContext
     {
-        private readonly string _connectionString;
-
-        public WordNetDbContext(string connectionString)
-        {
-            _connectionString = connectionString;
-            Database.EnsureCreated();
-        }
-
         public WordNetDbContext(DbContextOptions<WordNetDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
 
         public DbSet<LexicalEntry> LexicalEntries { get; set; }
@@ -34,9 +26,6 @@ namespace WordNet.Data
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseLazyLoadingProxies();
-
-            if (!string.IsNullOrEmpty(_connectionString))
-                options.UseSqlite(_connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

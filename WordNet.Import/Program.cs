@@ -1,4 +1,5 @@
-﻿using Mono.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using Mono.Options;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -49,7 +50,10 @@ namespace WordNet.Import
                 var parser = new XmlWordNetParser();
                 var result = parser.Parse(wordNetFile, loadRelations);
 
-                using var db = new WordNetDbContext(connectionString);
+                var optionsBuilder = new DbContextOptionsBuilder<WordNetDbContext>();
+                optionsBuilder.UseSqlite(connectionString);
+
+                using var db = new WordNetDbContext(optionsBuilder.Options);
                 Console.WriteLine("Saving into db. This will take a while.");
 
                 db.AddRange(result.LexicalEntries);
