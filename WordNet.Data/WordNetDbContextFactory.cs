@@ -9,11 +9,11 @@ namespace WordNet.Data
     /// <para/>
     /// 
     /// <example>Create database migration with:
-    /// <code>dotnet ef migrations add NameOfMigration</code>
+    /// <code>dotnet ef migrations add NameOfMigration --context WordNetDbContext --output-dir Migrations/WordNetDb</code>
     /// </example>
     /// 
     /// <example>Update database with:
-    /// <code>dotnet ef database update</code>
+    /// <code>dotnet ef database update --context WordNetDbContext</code>
     /// </example>
     /// 
     /// <example> You can specify connection string by appending to above mentioned commands:

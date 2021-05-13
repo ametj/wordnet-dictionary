@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Prism.Ioc;
 using Prism.Unity;
+using System;
 using System.Configuration;
+using System.Reflection;
 using System.Windows;
 using WordNet.Data;
 using WordNet.Wpf.Core;
@@ -16,11 +18,8 @@ namespace WordNet.Wpf
     {
         protected override void RegisterTypes(IContainerRegistry container)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<WordNetDbContext>();
-            optionsBuilder.UseSqlite(ConfigurationManager.ConnectionStrings["Sqlite"].ConnectionString);
+            RegisterDbContext(container);
 
-            container.RegisterInstance(optionsBuilder.Options);
-            container.RegisterSingleton<WordNetDbContext>();
             container.RegisterSingleton<IWordNetService, WordNetService>();
             container.RegisterSingleton<ISettingsService, SettingsService>();
             container.RegisterSingleton<IThemeService, ThemeService>();
@@ -41,6 +40,29 @@ namespace WordNet.Wpf
         {
             base.OnExit(e);
             Wpf.Properties.Settings.Default.Save();
+        }
+
+        private static void RegisterDbContext(IContainerRegistry container)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<WordNetDbContext>();
+            optionsBuilder.UseSqlite(ConfigurationManager.ConnectionStrings["WordNetData"].ConnectionString);
+            container.RegisterInstance(new WordNetDbContext(optionsBuilder.Options));
+
+            var userOptionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
+            var connectionString = ConfigurationManager.ConnectionStrings["UserData"].ConnectionString.Replace("%APP_DATA%", GetUserAppDataPath());
+            userOptionsBuilder.UseSqlite(connectionString);
+            container.RegisterInstance(new UserDbContext(userOptionsBuilder.Options));
+        }
+
+        public static string GetUserAppDataPath()
+        {
+            var attributes = Assembly.GetEntryAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+            var companyAttribute = (AssemblyCompanyAttribute)attributes[0];
+
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            path += @"\" + companyAttribute.Company;
+
+            return path;
         }
     }
 }

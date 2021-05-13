@@ -9,46 +9,53 @@ namespace WordNet.Data
 {
     public class WordNetService : IWordNetService
     {
-        private readonly int _partOfSpeechCount = Enum.GetNames(typeof(PartOfSpeech)).Length;
-
-        public WordNetService(WordNetDbContext context)
+        public WordNetService(WordNetDbContext wordNetDbContext, UserDbContext userDbContext)
         {
-            Context = context;
+            WordNetDbContext = wordNetDbContext;
+            UserDbContext = userDbContext;
         }
 
-        public WordNetDbContext Context { get; }
+        public WordNetDbContext WordNetDbContext { get; }
+        public UserDbContext UserDbContext { get; }
 
         public async Task<ICollection<LexicalEntry>> GetByLemma(string lemma, string language)
         {
-            var query = Context.LexicalEntries.Where(le => le.Lemma == lemma && le.Language == language);
+            var query = WordNetDbContext.LexicalEntries.Where(le => le.Lemma == lemma && le.Language == language);
 
-            await query.ForEachAsync(le => le.LastAccessed = DateTime.UtcNow);
-            await Context.SaveChangesAsync();
+            UpdateLemmaHistory(lemma, language);
 
             return await query.ToListAsync();
         }
 
-        public async Task<ICollection<LexicalEntry>> GetLemmaHistory(string language, int limit)
+        public async void UpdateLemmaHistory(string lemma, string language)
         {
-            var query = Context.LexicalEntries.Where(le => le.LastAccessed != null);
+            var historyEntity = await UserDbContext.FindAsync<LexicalEntryHistory>(lemma, language);
+
+            if (historyEntity != null)
+            {
+                historyEntity.LastAccessed = DateTime.UtcNow;
+            }
+            else
+            {
+                historyEntity = new LexicalEntryHistory { Lemma = lemma, Language = language, LastAccessed = DateTime.UtcNow };
+                UserDbContext.Add(historyEntity);
+            }
+
+            await UserDbContext.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<LexicalEntryHistory>> GetLemmaHistory(string language, int limit)
+        {
+            var query = UserDbContext.LexicalEntriesHistory.AsNoTracking();
 
             if (!string.IsNullOrEmpty(language))
             {
                 query = query.Where(le => le.Language == language);
             }
 
-            var result = await query.AsNoTracking()
-                .OrderByDescending(le => le.LastAccessed)
-                .Take(limit * _partOfSpeechCount)
-                .ToListAsync();
+            query = query.OrderByDescending(le => le.LastAccessed).Take(limit);
 
-            // In Db grouping is too slow.
-            result = result.GroupBy(le => new { le.Lemma, le.Language })
-                .Select(g => new LexicalEntry { Lemma = g.Key.Lemma, Language = g.Key.Language, LastAccessed = g.Max(le => le.LastAccessed) })
-                .OrderByDescending(le => le.LastAccessed)
-                .Take(limit).ToList();
-
-            return result;
+            return await query.ToListAsync();
         }
 
         public async Task<ICollection<string>> GetSuggestionsByLemma(string lemma, string language, int limit)
@@ -56,7 +63,7 @@ namespace WordNet.Data
             lemma = lemma?.Trim().ToLower();
             if (string.IsNullOrEmpty(lemma)) return Array.Empty<string>();
 
-            var query = Context.LexicalEntries
+            var query = WordNetDbContext.LexicalEntries
                 .Where(le => le.Lemma.ToLower().StartsWith(lemma) && le.Language == language)
                 .Select(le => le.Lemma)
                 .Distinct()

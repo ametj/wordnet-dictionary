@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace WordNet.Data.Migrations
+namespace WordNet.Data.Migrations.WordNetDb
 {
     public partial class InitialCreate : Migration
     {

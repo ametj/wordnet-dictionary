@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WordNet.Data;
 
-namespace WordNet.Data.Migrations
+namespace WordNet.Data.Migrations.WordNetDb
 {
     [DbContext(typeof(WordNetDbContext))]
-    [Migration("20210512125732_InitialCreate")]
+    [Migration("20210512221216_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
