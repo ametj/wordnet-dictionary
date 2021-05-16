@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\WordNet\WordNet.Data\WordNet.Data.csproj" />
+    <ProjectReference Include="..\WordNet.Service\WordNet.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

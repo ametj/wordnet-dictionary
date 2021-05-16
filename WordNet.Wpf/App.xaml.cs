@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Reflection;
 using System.Windows;
 using WordNet.Data;
+using WordNet.Service;
 using WordNet.Wpf.Core;
 using WordNet.Wpf.Service;
 using WordNet.Wpf.Views;
@@ -20,7 +21,10 @@ namespace WordNet.Wpf
         {
             RegisterDbContext(container);
 
+            container.RegisterSingleton<IWordNetDataService, WordNetDataService>();
+            container.RegisterSingleton<IUserDataService, UserDataService>();
             container.RegisterSingleton<IWordNetService, WordNetService>();
+
             container.RegisterSingleton<ISettingsService, SettingsService>();
             container.RegisterSingleton<IThemeService, ThemeService>();
             container.RegisterSingleton<IApplicationCommands, ApplicationCommands>();

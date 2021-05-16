@@ -2,8 +2,8 @@
 using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Linq;
-using WordNet.Data;
 using WordNet.Data.Model;
+using WordNet.Service;
 
 namespace WordNet.Wpf.ViewModels.Dictionary
 {

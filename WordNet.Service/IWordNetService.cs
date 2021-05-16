@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using WordNet.Data.Model;
 
-namespace WordNet.Data
+namespace WordNet.Service
 {
     public interface IWordNetService
     {
