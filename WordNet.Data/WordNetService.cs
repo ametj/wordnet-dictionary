@@ -20,6 +20,9 @@ namespace WordNet.Data
 
         public async Task<ICollection<LexicalEntry>> GetByLemma(string lemma, string language)
         {
+            lemma = lemma?.Trim();
+            if (string.IsNullOrEmpty(lemma)) return Array.Empty<LexicalEntry>();
+
             var query = WordNetDbContext.LexicalEntries.Where(le => le.Lemma == lemma && le.Language == language);
 
             UpdateLemmaHistory(lemma, language);
