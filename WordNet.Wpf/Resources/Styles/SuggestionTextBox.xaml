@@ -32,6 +32,11 @@ Copyright (c) 2016 Paulo Roberto Quicoli-->
                                 </Style>
                             </TextBox.Style>
                         </TextBox>
+                        <c:Loading IsLoading="{Binding IsLoading, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                   HideDelay="100"
+                                   ResetAfter="2000"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,0,25,0" />
                         <Popup x:Name="PART_Popup"
                                IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=TwoWay}"
                                Width="{TemplateBinding ActualWidth}"
@@ -45,7 +50,7 @@ Copyright (c) 2016 Paulo Roberto Quicoli-->
                                     Padding="2">
                                 <Grid>
                                     <ListBox x:Name="PART_Selector"
-                                             ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource Mode=TemplatedParent}, NotifyOnTargetUpdated=True}"
                                              ItemTemplate="{TemplateBinding ItemTemplate}"
                                              ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                              Focusable="False"

@@ -1,13 +1,14 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using WordNet.Data.Model;
 using WordNet.Service;
+using WordNet.Wpf.Core;
 
 namespace WordNet.Wpf.ViewModels.Dictionary
 {
-    public class DictionaryViewModel : BindableBase
+    public class DictionaryViewModel : ViewModelBase
     {
         public DictionaryViewModel(IWordNetService service)
         {
@@ -20,42 +21,41 @@ namespace WordNet.Wpf.ViewModels.Dictionary
 
         public string Text
         {
-            get { return _text; }
-            set { SetProperty(ref _text, value); }
+            get => _text;
+            set => SetProperty(ref _text, value);
         }
 
         private string _selectedLemma;
 
         public string SelectedLemma
         {
-            get { return _selectedLemma; }
-            set { SetProperty(ref _selectedLemma, value); }
+            get => _selectedLemma;
+            set => SetProperty(ref _selectedLemma, value);
         }
 
         private IEnumerable<LexicalEntry> _lexicalEntries;
 
         public IEnumerable<LexicalEntry> LexicalEntries
         {
-            get { return _lexicalEntries; }
-            set { SetProperty(ref _lexicalEntries, value); }
+            get => _lexicalEntries;
+            set => SetProperty(ref _lexicalEntries, value);
         }
 
         private IEnumerable<string> _suggestions;
 
         public IEnumerable<string> Suggestions
         {
-            get { return _suggestions; }
-
-            set { SetProperty(ref _suggestions, value); }
+            get => _suggestions;
+            set => SetProperty(ref _suggestions, value);
         }
 
-        private DelegateCommand<string> _getSuggestionsCommand = null;
-        public DelegateCommand<string> GetSuggestionsCommand => _getSuggestionsCommand ??= new DelegateCommand<string>(GetSuggestionsAsync);
+        private ICommand _getSuggestionsCommand = null;
+        public ICommand GetSuggestionsCommand => _getSuggestionsCommand ??= new DelegateCommand<string>(GetSuggestions);
 
-        private DelegateCommand<string> _submitCommand = null;
-        public DelegateCommand<string> SubmitCommand => _submitCommand ??= new DelegateCommand<string>(Submit);
+        private ICommand _submitCommand = null;
+        public ICommand SubmitCommand => _submitCommand ??= new DelegateCommand<string>(Submit);
 
-        public async void GetSuggestionsAsync(string filter)
+        public async void GetSuggestions(string filter)
         {
             if (string.IsNullOrEmpty(filter))
             {
@@ -69,6 +69,7 @@ namespace WordNet.Wpf.ViewModels.Dictionary
 
         private async void Submit(string lemma)
         {
+            IsLoading = true;
             Text = SelectedLemma = lemma;
             LexicalEntries = await Service.GetByLemma(lemma);
         }

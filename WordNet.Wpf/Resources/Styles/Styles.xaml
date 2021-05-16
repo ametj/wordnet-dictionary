@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:WordNet.Wpf.Controls">
+    <Style TargetType="{x:Type c:Loading}">
+        <Setter Property="Stroke" Value="{DynamicResource MahApps.Brushes.Accent2}" />
+        <Setter Property="StoryboardKey" Value="{x:Static c:LoadingAnimation.WithPause}" />
+    </Style>
+</ResourceDictionary>

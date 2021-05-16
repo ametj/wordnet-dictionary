@@ -3,6 +3,7 @@
         <ResourceDictionary Source="Buttons.xaml" />
         <ResourceDictionary Source="ColorButtonsListBox.xaml" />
         <ResourceDictionary Source="Items.xaml" />
+        <ResourceDictionary Source="Styles.xaml" />
         <ResourceDictionary Source="SuggestionTextBox.xaml" />
         <ResourceDictionary Source="Texts.xaml" />
     </ResourceDictionary.MergedDictionaries>

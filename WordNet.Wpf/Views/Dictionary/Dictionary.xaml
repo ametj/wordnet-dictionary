@@ -29,5 +29,8 @@
                              GetSuggestionsCommand="{Binding GetSuggestionsCommand}">
         </c:SuggestionsTextBox>
         <le:LexicalEntryList Grid.Row="1" Margin="0, 4"></le:LexicalEntryList>
+        <c:Loading Grid.Row="1" 
+                   Radius="20" StrokeThickness="6" ShowOverlay="True"
+                   IsLoading="{Binding IsLoading}"/>
     </Grid>
 </UserControl>

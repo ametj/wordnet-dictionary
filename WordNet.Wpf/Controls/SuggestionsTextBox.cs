@@ -4,6 +4,8 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -35,9 +37,11 @@ namespace WordNet.Wpf.Controls
         public static readonly DependencyProperty CharacterCasingProperty = DependencyProperty.Register(nameof(CharacterCasing), typeof(CharacterCasing), typeof(SuggestionsTextBox), new FrameworkPropertyMetadata(CharacterCasing.Normal));
         public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register(nameof(MaxLength), typeof(int), typeof(SuggestionsTextBox), new FrameworkPropertyMetadata(0));
         public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register(nameof(Watermark), typeof(string), typeof(SuggestionsTextBox), new FrameworkPropertyMetadata(string.Empty));
-        
+
         public static readonly DependencyProperty DelayProperty = DependencyProperty.Register(nameof(Delay), typeof(int), typeof(SuggestionsTextBox), new FrameworkPropertyMetadata(200));
         public static readonly DependencyProperty GetSuggestionsCommandProperty = DependencyProperty.Register(nameof(GetSuggestionsCommand), typeof(ICommand), typeof(SuggestionsTextBox), new FrameworkPropertyMetadata(null));
+
+        public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register(nameof(IsLoading), typeof(bool), typeof(SuggestionsTextBox), new PropertyMetadata(false));
 
         private bool _isUpdatingText;
 
@@ -151,6 +155,12 @@ namespace WordNet.Wpf.Controls
             set => SetValue(GetSuggestionsCommandProperty, value);
         }
 
+        public bool IsLoading
+        {
+            get => (bool)GetValue(IsLoadingProperty);
+            set => SetValue(IsLoadingProperty, value);
+        }
+
         #endregion "Properties"
 
         #region "Methods"
@@ -191,6 +201,7 @@ namespace WordNet.Wpf.Controls
                 SelectionAdapter = new SelectionAdapter(ItemsSelector);
                 SelectionAdapter.SelectionChanged += OnSelectionAdapterSelectionChanged;
                 ItemsSelector.PreviewMouseDown += ItemsSelector_PreviewMouseDown;
+                ItemsSelector.TargetUpdated += ItemsSelector_TargetUpdated;
             }
         }
 
@@ -221,7 +232,7 @@ namespace WordNet.Wpf.Controls
             if (ItemsSelector is ListBox listBox && listBox.SelectedItem != null)
                 listBox.ScrollIntoView(listBox.SelectedItem);
         }
-       
+
         private void ItemsSelector_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if ((e.OriginalSource as FrameworkElement)?.DataContext == null)
@@ -231,6 +242,12 @@ namespace WordNet.Wpf.Controls
             ItemsSelector.SelectedItem = ((FrameworkElement)e.OriginalSource)?.DataContext;
             CommitSelection();
             e.Handled = true;
+        }
+
+        private void ItemsSelector_TargetUpdated(object sender, DataTransferEventArgs e)
+        {
+            IsLoading = false;
+            IsDropDownOpen = ((IEnumerable<object>)ItemsSource).Any();
         }
 
         private string GetDisplayText(object dataItem)
@@ -255,6 +272,7 @@ namespace WordNet.Wpf.Controls
             Editor?.Focus();
             Editor?.Select(Editor?.Text.Length ?? 0, 0);
         }
+
         private void OnEditorKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
@@ -318,7 +336,7 @@ namespace WordNet.Wpf.Controls
             }
             else
             {
-                IsDropDownOpen = false;
+                FetchTimer.IsEnabled = IsDropDownOpen = IsLoading = false;
             }
         }
 
@@ -343,7 +361,7 @@ namespace WordNet.Wpf.Controls
                 FetchTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(Delay) };
                 FetchTimer.Tick += OnFetchTimerTick;
             }
-            FetchTimer.IsEnabled = true;
+            FetchTimer.IsEnabled = IsLoading = true;
         }
 
         private void OnFetchTimerTick(object sender, EventArgs e)
@@ -356,9 +374,9 @@ namespace WordNet.Wpf.Controls
 
         private void GetSuggestions()
         {
+            IsLoading = true;
             Filter = Editor.Text;
             GetSuggestionsCommand.Execute(Filter);
-            IsDropDownOpen = true;
         }
 
         private void OnPopupOpened(object sender, EventArgs e)
@@ -383,10 +401,13 @@ namespace WordNet.Wpf.Controls
             IsDropDownOpen = false;
             Editor.Select(Editor.Text.Length, 0);
             Filter = Editor.Text;
+
             if (FetchTimer != null) FetchTimer.IsEnabled = false;
+            IsLoading = false;
 
             if (confirmSelection) ExecuteCommand();
         }
+
         #endregion "Methods"
     }
 }

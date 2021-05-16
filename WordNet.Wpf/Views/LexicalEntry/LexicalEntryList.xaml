@@ -2,6 +2,7 @@
              x:Name="LexicalEntryListUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:WordNet.Wpf.ViewModels.Dictionary"
@@ -9,7 +10,12 @@
              d:DataContext="{d:DesignInstance Type=vm:DictionaryViewModel}"
              d:DesignHeight="400" d:DesignWidth="600" d:Background="White">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <ItemsControl ItemsSource="{Binding LexicalEntries}" Focusable="False">
+        <ItemsControl ItemsSource="{Binding LexicalEntries, NotifyOnTargetUpdated=True}" Focusable="False">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TargetUpdated">
+                    <i:CallMethodAction MethodName="LoadingDone" TargetObject="{Binding}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
