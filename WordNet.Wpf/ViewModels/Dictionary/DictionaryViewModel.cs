@@ -55,6 +55,9 @@ namespace WordNet.Wpf.ViewModels.Dictionary
         private ICommand _submitCommand = null;
         public ICommand SubmitCommand => _submitCommand ??= new DelegateCommand<string>(Submit);
 
+        private ICommand _getRandomCommand = null;
+        public ICommand GetRandomCommand => _getRandomCommand ??= new DelegateCommand(GetRandom);
+
         public async void GetSuggestions(string filter)
         {
             if (string.IsNullOrEmpty(filter))
@@ -72,6 +75,13 @@ namespace WordNet.Wpf.ViewModels.Dictionary
             IsLoading = true;
             Text = SelectedLemma = lemma;
             LexicalEntries = await Service.GetByLemma(lemma);
+        }
+
+        private async void GetRandom()
+        {
+            IsLoading = true;
+            var lemma = await Service.GetRandomLemma();
+            SubmitCommand.Execute(lemma);
         }
     }
 }

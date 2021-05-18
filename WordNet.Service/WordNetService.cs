@@ -58,5 +58,16 @@ namespace WordNet.Service
         {
             return Run(() => UserDataService.GetLemmaHistory(language, limit));
         }
+
+        public Task<string> GetRandomLemma(string language)
+        {
+            return Run(async () =>
+            {
+                var history = await UserDataService.GetLemmaHistory(language, from: DateTime.Today);
+                var exclude = history.Select(h => h.Lemma).ToList();
+
+                return await WordNetDataService.GetRandomLemma(language, exclude);
+            });
+        }
     }
 }

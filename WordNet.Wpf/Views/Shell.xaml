@@ -40,13 +40,6 @@
                 </DoubleAnimationUsingKeyFrames>
             </Storyboard>
 
-            <Style TargetType="{x:Type icon:PackIconMaterial}">
-                <Setter Property="Width" Value="20" />
-                <Setter Property="Height" Value="20" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="HorizontalAlignment" Value="Center" />
-            </Style>
-
             <!--  This is the template for the menu item  -->
             <DataTemplate x:Key="HamburgerMenuItemTemplate" DataType="{x:Type metro:HamburgerMenuIconItem}">
                 <DockPanel Height="40" LastChildFill="True">

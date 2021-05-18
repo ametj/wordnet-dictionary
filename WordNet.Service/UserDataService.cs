@@ -17,13 +17,23 @@ namespace WordNet.Service
 
         public UserDbContext UserDbContext { get; }
 
-        public async Task<ICollection<LexicalEntryHistory>> GetLemmaHistory(string language, int limit)
+        public async Task<ICollection<LexicalEntryHistory>> GetLemmaHistory(string language, int limit, DateTime? from, DateTime? to)
         {
             var query = UserDbContext.LexicalEntriesHistory.AsNoTracking();
 
             if (!string.IsNullOrEmpty(language))
             {
                 query = query.Where(le => le.Language == language);
+            }
+
+            if (from != null)
+            {
+                query = query.Where(le => le.LastAccessed >= from);
+            }
+
+            if (to != null)
+            {
+                query = query.Where(le => le.LastAccessed <= to);
             }
 
             query = query.OrderByDescending(le => le.LastAccessed).Take(limit);

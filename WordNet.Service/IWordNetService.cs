@@ -11,5 +11,7 @@ namespace WordNet.Service
         Task<ICollection<LexicalEntryHistory>> GetLemmaHistory(string language = "en", int limit = 50);
 
         Task<ICollection<string>> GetSuggestionsByLemma(string lemma, string language = "en", int limit = 50);
+        
+        Task<string> GetRandomLemma(string language = "en");
     }
 }
