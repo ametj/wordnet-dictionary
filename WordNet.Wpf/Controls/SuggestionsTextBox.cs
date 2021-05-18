@@ -336,7 +336,8 @@ namespace WordNet.Wpf.Controls
             }
             else
             {
-                FetchTimer.IsEnabled = IsDropDownOpen = IsLoading = false;
+                if (FetchTimer != null) FetchTimer.IsEnabled = false;
+                IsDropDownOpen = IsLoading = false;
             }
         }
 
