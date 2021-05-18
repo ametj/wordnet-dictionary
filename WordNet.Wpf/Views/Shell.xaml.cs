@@ -71,9 +71,9 @@ namespace WordNet.Wpf.Views
         private void HideWindow()
         {
             if (Properties.Settings.Default.ShowNotificationAreaIcon && Properties.Settings.Default.MinimizeToNotificationArea)
-                Application.Current.MainWindow.Hide();
+                Hide();
             else
-                Application.Current.MainWindow.WindowState = WindowState.Minimized;
+                WindowState = WindowState.Minimized;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
