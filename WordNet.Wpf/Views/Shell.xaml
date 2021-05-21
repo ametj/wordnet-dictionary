@@ -133,6 +133,7 @@
 
         <tb:TaskbarIcon x:Name="NotificationAreaIcon"
                         Visibility="{core:SettingBinding ShowNotificationAreaIcon, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        IconSource="/Resources/WordNet.ico"
                         ToolTipText="WordNet"
                         MenuActivation="RightClick"
                         DoubleClickCommand="{Binding ApplicationCommands.ShowHideWindowCommand}">

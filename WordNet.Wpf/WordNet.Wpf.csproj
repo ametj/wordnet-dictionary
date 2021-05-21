@@ -5,6 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AnalysisLevel>preview</AnalysisLevel>
+    <ApplicationIcon>Resources\WordNet.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\WordNet\WordNet.Data\WordNet.Data.csproj" />
     <ProjectReference Include="..\WordNet.Service\WordNet.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\WordNet.ico" />
   </ItemGroup>
 
   <ItemGroup>
