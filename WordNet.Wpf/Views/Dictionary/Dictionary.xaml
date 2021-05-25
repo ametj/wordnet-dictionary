@@ -16,16 +16,12 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <DockPanel LastChildFill="True" IsEnabled="{Binding IsLoading, Converter={StaticResource NegateBoolConverter}}">
-            <Button DockPanel.Dock="Right"
-                    Padding="5"
-                    ToolTip="Random"
-                    Style="{DynamicResource IconButton}"
-                    Command="{Binding GetRandomCommand}">
-                <icon:PackIconMaterial Kind="Dice3Outline" />
-            </Button>
+        <Grid IsEnabled="{Binding IsLoading, Converter={StaticResource NegateBoolConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
             <c:SuggestionsTextBox x:Name="SuggestionTextBox"
-                                  Grid.Row="0"
                                   Height="32"
                                   MaxLength="50"
                                   MaxPopupHeight="200"
@@ -37,7 +33,14 @@
                                   CommandParameter="{Binding Text}"
                                   GetSuggestionsCommand="{Binding GetSuggestionsCommand}">
             </c:SuggestionsTextBox>
-        </DockPanel>
+            <Button Padding="5"
+                    Grid.Column="1"
+                    ToolTip="Random"
+                    Style="{DynamicResource IconButton}"
+                    Command="{Binding GetRandomCommand}">
+                <icon:PackIconMaterial Kind="Dice3Outline" />
+            </Button>
+        </Grid>
         <le:LexicalEntryList Grid.Row="1" Margin="0, 4"></le:LexicalEntryList>
         <c:Loading Grid.Row="1"
                    Radius="20" StrokeThickness="6" ShowOverlay="True"
