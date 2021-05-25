@@ -32,10 +32,10 @@ namespace WordNet.Data
         {
             Expression<Func<IList<string>, string>> serialize = f => JsonSerializer.Serialize(f, null);
             Expression<Func<string, IList<string>>> deserialize = f => JsonSerializer.Deserialize<List<string>>(f, null);
-            var collectionComparer = new ValueComparer<IEnumerable<string>>(
+            var collectionComparer = new ValueComparer<IList<string>>(
                 (c1, c2) => c1.SequenceEqual(c2),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                c => c.ToList());
+                c => c);
 
             modelBuilder
                 .Entity<LexicalEntry>()
