@@ -60,7 +60,7 @@ namespace WordNet.Service
             }
 
             var skip = _random.Next(query.Count());
-            query = query.Skip(skip).Take(1);
+            query = query.OrderBy(l => l).Skip(skip).Take(1);
 
             return await query.FirstOrDefaultAsync();
         }
