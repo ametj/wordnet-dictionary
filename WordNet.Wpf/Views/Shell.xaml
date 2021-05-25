@@ -91,22 +91,22 @@
             <metro:HamburgerMenu.HamburgerMenuHeaderTemplate>
                 <DataTemplate>
                     <TextBlock HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           FontSize="16"
-                           Foreground="White"
-                           Text="Menu" />
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Foreground="White"
+                               Text="Menu" />
                 </DataTemplate>
             </metro:HamburgerMenu.HamburgerMenuHeaderTemplate>
 
             <!--  Items  -->
             <metro:HamburgerMenu.ItemsSource>
                 <metro:HamburgerMenuItemCollection>
-                    <metro:HamburgerMenuIconItem Label="Dictionary" Command="{Binding DataContext.NavigateCommand, ElementName=MainWindow}" CommandParameter="Dictionary">
+                    <metro:HamburgerMenuIconItem Label="Dictionary" Command="{Binding NavigateCommand}" CommandParameter="Dictionary">
                         <metro:HamburgerMenuIconItem.Icon>
                             <icon:PackIconMaterial Kind="BookAlphabet" />
                         </metro:HamburgerMenuIconItem.Icon>
                     </metro:HamburgerMenuIconItem>
-                    <metro:HamburgerMenuIconItem Label="Guess the word" Command="{Binding DataContext.NavigateCommand, ElementName=MainWindow}" CommandParameter="Placeholder">
+                    <metro:HamburgerMenuIconItem Label="Guess the word" Command="{Binding NavigateCommand}" CommandParameter="Placeholder">
                         <metro:HamburgerMenuIconItem.Icon>
                             <icon:PackIconMaterial Kind="FileQuestion" />
                         </metro:HamburgerMenuIconItem.Icon>
@@ -117,7 +117,7 @@
             <!--Options-->
             <metro:HamburgerMenu.OptionsItemsSource>
                 <metro:HamburgerMenuItemCollection>
-                    <metro:HamburgerMenuIconItem Label="Settings" Command="{Binding DataContext.NavigateCommand, ElementName=MainWindow}" CommandParameter="Settings">
+                    <metro:HamburgerMenuIconItem Label="Settings" Command="{Binding NavigateCommand}" CommandParameter="Settings">
                         <metro:HamburgerMenuIconItem.Icon>
                             <icon:PackIconMaterial Kind="Cog" />
                         </metro:HamburgerMenuIconItem.Icon>
