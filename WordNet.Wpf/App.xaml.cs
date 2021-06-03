@@ -14,6 +14,7 @@ using WordNet.Data;
 using WordNet.Service;
 using WordNet.Wpf.Core;
 using WordNet.Wpf.Service;
+using WordNet.Wpf.Util;
 using WordNet.Wpf.Views;
 using WordNet.Wpf.Views.Dictionary;
 using WordNet.Wpf.Views.Settings;
@@ -22,6 +23,11 @@ namespace WordNet.Wpf
 {
     public partial class App : PrismApplication
     {
+        public App()
+        {
+            SingleInstance.SingleInstanceWatcher();
+        }
+
         protected override IContainerExtension CreateContainerExtension()
         {
             var serviceCollection = new ServiceCollection();
